@@ -128,19 +128,17 @@ class RNUnifiedContacts: NSObject {
 
       try contactStore.enumerateContactsWithFetchRequest(fetchRequest) { (cNContact, pointer) -> Void in
 
-        if !cNContact.givenName.isEmpty {  // Ignore any Contacts that don't have a Given Name. Garbage Contact.
-
-          if searchText == nil {
-            // Add all Contacts if no searchText is provided.
+        if searchText == nil {
+          // Add all Contacts if no searchText is provided.
+          cNContacts.append(cNContact)
+        }
+        else {
+          // If the Contact contains the search string then add it.
+          if self.contactContainsText( cNContact, searchText: searchText! ) {
             cNContacts.append(cNContact)
           }
-          else {
-            // If the Contact contains the search string then add it.
-            if self.contactContainsText( cNContact, searchText: searchText! ) {
-              cNContacts.append(cNContact)
-            }
-          }
         }
+        
       }
 
       var contacts = [NSDictionary]();
